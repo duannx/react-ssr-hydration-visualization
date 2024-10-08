@@ -2,6 +2,14 @@
     width: 100%;
     min-height: 200px;
     background-color: #ddd;
+    color: #FFF;
+    font-size: 32px;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 2em;
     &.hydrated {
         background-color: #4caf50;
     }

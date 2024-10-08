@@ -30,6 +30,21 @@ if (!isProduction) {
 } else {
   const compression = (await import('compression')).default
   const sirv = (await import('sirv')).default
+
+  // Delay all the JS file to 1-2 seconds to simulate real world application
+  const delayJS = (req, res, next) => {
+    if (req.url.includes("/assets") && req.url.includes(".js")) {
+      console.log("delaying", req.url);
+      const delay = 1000 + Math.floor(Math.random() * 1000);
+      setTimeout(() => {
+        next();
+      }, delay);
+    } else {
+      next();
+    }
+  };
+  
+  app.use(delayJS); // Add the delay middleware
   app.use(compression())
   app.use(base, sirv('./dist/client', { extensions: [] }))
 }
