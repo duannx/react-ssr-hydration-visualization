@@ -44,7 +44,7 @@ if (!isProduction) {
     }
   };
   
-  app.use(delayJS); // Add the delay middleware
+  // app.use(delayJS); // Add the delay middleware
   app.use(compression())
   app.use(base, sirv('./dist/client', { extensions: [] }))
 }
@@ -65,8 +65,8 @@ app.use('*', async (req, res) => {
       template = templateHtml
       render = (await import('./dist/server/entry-server.js')).render
     }
-
-    const rendered = await render(url, ssrManifest)
+    
+    const rendered = await render(req.baseUrl)
 
     const html = template
       .replace(`<!--app-head-->`, rendered.head ?? '')

@@ -1,22 +1,35 @@
-import { lazy, Suspense } from "react";
+import { FunctionComponent, useEffect } from "react";
 import "./App.scss";
-const Area = lazy(() => import("./components/Area"));
-function App() {
+
+import HomePage from "./pages/HomePage";
+import NormalSuspense from "./pages/NormalSuspense";
+import SuspenseError1 from "./pages/SuspenseError1";
+import SuspenseError2 from "./pages/SuspenseError2";
+import { log } from "./utils/log";
+
+const pathNameToPages: {
+  [key: string]: FunctionComponent;
+} = {
+  "/": HomePage,
+  "": HomePage,
+  "/suspense": NormalSuspense,
+  "/suspense/": NormalSuspense,
+  "/suspense-error-1": SuspenseError1,
+  "/suspense-error-1/": SuspenseError1,
+  "/suspense-error-2": SuspenseError2,
+  "/suspense-error-2/": SuspenseError2,
+};
+
+function App({ pathName }: { pathName: string }) {
+  log("App rendering");
+  const Page = pathNameToPages[pathName] || HomePage;
+  useEffect(() => {
+    // log("App effect fired");
+  });
   return (
-    <div className="container">
-      <Suspense>
-        <Area id="A"></Area>
-      </Suspense>
-      <Suspense>
-        <Area id="B"></Area>
-      </Suspense>
-      <Suspense>
-        <Area id="C"></Area>
-      </Suspense>
-      <Suspense>
-        <Area id="D"></Area>
-      </Suspense>
-    </div>
+    <>
+      <Page></Page>
+    </>
   );
 }
 

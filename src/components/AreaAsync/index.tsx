@@ -1,7 +1,13 @@
 import { useEffect, useState } from "react";
 import { log } from "../../utils/log";
 
-export default function Area({ id }: { id?: string }) {
+export default function AreaAsync({
+  id,
+  updateState,
+}: {
+  id?: string;
+  updateState?: (value: any) => void;
+}) {
   const [isHydrated, setIsHydrated] = useState(false);
   const [count, setCount] = useState(0);
 
@@ -13,6 +19,7 @@ export default function Area({ id }: { id?: string }) {
     window.requestAnimationFrame(() => {
       performance.mark(`AREA ${id} HYDRATION DONE`);
       log(`AREA ${id} HYDRATION DONE`);
+      updateState && updateState(Math.random());
     });
     delay(200);
   }
@@ -21,7 +28,7 @@ export default function Area({ id }: { id?: string }) {
     log(`Area ${id} effect run`);
     setIsHydrated(true);
   }, []);
-  
+
   return (
     <div className={`area ${isHydrated ? "hydrated" : ""}`}>
       {id} - {isHydrated ? "hydrated" : "hydrating"}
